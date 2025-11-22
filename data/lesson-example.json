@@ -1,0 +1,80 @@
+{
+  "id": "cocktail-basics-01",
+  "title": "Introduction to Mojito",
+  "type": "quiz",
+  "steps": [
+    {
+      "id": "step-1",
+      "type": "text",
+      "content": "A Mojito is a classic Cuban cocktail made with white rum, sugar, lime juice, soda water, and mint. It's refreshing and perfect for hot days.",
+      "duration": 30
+    },
+    {
+      "id": "step-2",
+      "type": "video",
+      "content": "https://storage.googleapis.com/barlingo-media/mojito-demo.mp4",
+      "duration": 120
+    },
+    {
+      "id": "step-3",
+      "type": "text",
+      "content": "Key technique: Muddle the mint gently to release oils without tearing leaves. This prevents bitterness.",
+      "duration": 20
+    },
+    {
+      "id": "step-4",
+      "type": "quiz",
+      "content": "Test your knowledge",
+      "duration": 60
+    }
+  ],
+  "media_refs": [
+    "https://storage.googleapis.com/barlingo-media/mojito-demo.mp4",
+    "https://storage.googleapis.com/barlingo-media/mojito-thumbnail.jpg"
+  ],
+  "assessments": [
+    {
+      "id": "quiz-1",
+      "type": "multiple_choice",
+      "question": "What is the main spirit used in a Mojito?",
+      "options": [
+        "Vodka",
+        "White Rum",
+        "Gin",
+        "Tequila"
+      ],
+      "correct_answer": "White Rum",
+      "points": 10
+    },
+    {
+      "id": "quiz-2",
+      "type": "multiple_choice",
+      "question": "Why should you muddle mint gently?",
+      "options": [
+        "To save time",
+        "To prevent bitterness",
+        "To make it look better",
+        "It doesn't matter"
+      ],
+      "correct_answer": "To prevent bitterness",
+      "points": 10
+    },
+    {
+      "id": "quiz-3",
+      "type": "fill_blank",
+      "question": "A Mojito contains white rum, sugar, lime juice, soda water, and _____.",
+      "options": [],
+      "correct_answer": "mint",
+      "points": 5
+    }
+  ],
+  "xp_value": 50,
+  "pass_threshold": 70,
+  "tags": [
+    "beginner",
+    "cocktails",
+    "rum",
+    "classic",
+    "refreshing"
+  ]
+}
