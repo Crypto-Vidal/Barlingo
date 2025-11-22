@@ -1,0 +1,87 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isOrgAdmin(orgId) {
+      return isAuthenticated() &&
+             get(/databases/$(database)/documents/organizations/$(orgId)).data.adminIds.hasAny([request.auth.uid]);
+    }
+
+    // Users
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isOrgAdmin(resource.data.orgId);
+      allow write: if isOwner(userId);
+    }
+
+    // Organizations
+    match /organizations/{orgId} {
+      allow read: if isAuthenticated() &&
+                     (resource.data.adminIds.hasAny([request.auth.uid]) ||
+                      get(/databases/$(database)/documents/users/$(request.auth.uid)).data.orgId == orgId);
+      allow write: if isOrgAdmin(orgId);
+    }
+
+    // Courses
+    match /courses/{courseId} {
+      allow read: if isAuthenticated();
+      allow write: if false; // Only via admin functions
+    }
+
+    // Modules
+    match /modules/{moduleId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // Lessons
+    match /lessons/{lessonId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // Progress
+    match /progress/{progressId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow write: if false; // Only via functions
+    }
+
+    // Lesson Attempts
+    match /lessonAttempts/{attemptId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow write: if false;
+    }
+
+    // Leaderboards
+    match /leaderboards/{leaderboardId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // Org Leaderboards
+    match /orgLeaderboards/{leaderboardId} {
+      allow read: if isAuthenticated() &&
+                     get(/databases/$(database)/documents/users/$(request.auth.uid)).data.orgId == resource.data.orgId;
+      allow write: if false;
+    }
+
+    // Achievements
+    match /achievements/{achievementId} {
+      allow read: if isAuthenticated();
+      allow write: if false;
+    }
+
+    // User Achievements
+    match /userAchievements/{userAchievementId} {
+      allow read: if isAuthenticated() && resource.data.userId == request.auth.uid;
+      allow write: if false;
+    }
+  }
+}
