@@ -1,82 +1,71 @@
 # Barlingo
 
-Bartending training app with micro-lessons, skill trees, and AI roleplay.
+Bartending training web app with micro-lessons, skill trees, and AI roleplay.
 
 ## Structure
 
 ```
-├── mobile/                     # React Native app
-│   ├── src/
-│   │   ├── screens/           # UI screens
-│   │   │   ├── Onboard.tsx
-│   │   │   ├── SkillTree.tsx
-│   │   │   ├── LessonPlayer.tsx
-│   │   │   ├── RushSimulator.tsx
-│   │   │   └── Progress.tsx
-│   │   └── types/
-│   │       └── index.ts
-│   ├── package.json
-│   └── tsconfig.json
+├── app/                        # Next.js app directory
+│   ├── page.tsx               # Onboard screen
+│   ├── skill-tree/page.tsx    # Skill tree
+│   ├── lesson/[id]/page.tsx   # Lesson player
+│   ├── rush/page.tsx          # Rush simulator
+│   ├── progress/page.tsx      # Progress tracker
+│   └── globals.css
 │
-├── functions/                  # Firebase Cloud Functions
-│   ├── src/
-│   │   └── index.ts           # gradeLesson function
-│   ├── package.json
-│   └── tsconfig.json
+├── api/                        # Vercel serverless functions
+│   └── gradeLesson.js
+│
+├── lib/
+│   ├── types.ts               # TypeScript types
+│   └── firebase.ts            # Firebase config
+│
+├── functions/                  # Firebase Cloud Functions (alternative)
+│   └── src/index.ts
 │
 ├── data/
-│   └── lesson-example.json    # Sample lesson structure
+│   └── lesson-example.json
 │
 ├── docs/
 │   └── ai-roleplay-integration.md
 │
-└── firestore.rules            # Security rules
+└── firestore.rules
+```
+
+## Deploy to Vercel
+
+```bash
+vercel --prod
 ```
 
 ## Setup
 
-### Mobile
 ```bash
-cd mobile
 npm install
-npm start
+cp .env.example .env
+# Add Firebase credentials to .env
+npm run dev
 ```
 
-### Cloud Functions
-```bash
-cd functions
-npm install
-npm run build
-firebase deploy --only functions
-```
+## Environment Variables
 
-### Firestore
-```bash
-firebase deploy --only firestore:rules
-```
+Add to Vercel dashboard or `.env.local`:
 
-## Collections
+- `NEXT_PUBLIC_FIREBASE_API_KEY`
+- `NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN`
+- `NEXT_PUBLIC_FIREBASE_PROJECT_ID`
+- `NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET`
+- `NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID`
+- `NEXT_PUBLIC_FIREBASE_APP_ID`
 
-- `users` - User profiles with XP/level
-- `lessons` - Lesson content and assessments
-- `skills` - Skill tree nodes
-- `progress` - User lesson progress
-- `achievements` - User achievements
-- `rush_results` - Rush simulator scores
+## Routes
 
-## Cloud Function
+- `/` - Onboard
+- `/skill-tree` - Skills
+- `/lesson/[id]` - Lessons
+- `/rush` - Rush Hour
+- `/progress` - Progress
 
-**gradeLesson** - Grades quiz answers, updates progress, awards XP
+## API
 
-```typescript
-{
-  lessonId: string,
-  answers: [{ assessmentId: string, answer: string }]
-}
-```
-
-Returns: score, passed, xpEarned, results
-
-## AI Roleplay
-
-See `docs/ai-roleplay-integration.md` for Claude/OpenAI integration details.
+- `POST /api/gradeLesson` - Grade quiz answers
